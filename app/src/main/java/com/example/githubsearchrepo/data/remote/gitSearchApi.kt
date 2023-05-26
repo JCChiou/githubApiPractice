@@ -6,7 +6,9 @@ import retrofit2.http.Query
 
 interface gitSearchApi {
 
-    @GET("/search/repositories?q={query}&type=Repositories")
-    suspend fun searchRepo(@Query("query") query: String):SearchDto
+    @GET("/search/repositories")
+    suspend fun searchRepo(
+        @Query("q") query: String,
+    ): SearchDto
 
 }

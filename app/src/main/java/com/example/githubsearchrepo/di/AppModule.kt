@@ -1,12 +1,15 @@
 package com.example.githubsearchrepo.di
 
+import android.content.Context
 import com.example.githubsearchrepo.data.remote.gitSearchApi
+import com.example.githubsearchrepo.presentation.SearchRepoAdapter
 import com.example.githubsearchrepo.util.Constants.BASE_URL
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ActivityContext
 import dagger.hilt.components.SingletonComponent
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -28,5 +31,10 @@ object AppModule {
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
             .create(gitSearchApi::class.java)
+    }
+    @Provides
+    @Singleton
+    fun provideAdapter(): SearchRepoAdapter {
+        return SearchRepoAdapter()
     }
 }
