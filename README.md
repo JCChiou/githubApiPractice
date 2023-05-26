@@ -5,7 +5,7 @@
   - 依賴注入
     - Hilt
   - 網路連線
-    -  
+    - Retrofit 
   - RecyclerView
     - View Type 在畫面中不同的data type使用不同的view holder
     - ItemDecoration 對於Recycler View每個item view繪製分隔線
