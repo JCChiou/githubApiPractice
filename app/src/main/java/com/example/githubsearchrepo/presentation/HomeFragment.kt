@@ -1,7 +1,6 @@
 package com.example.githubsearchrepo.presentation
 
 import android.os.Bundle
-import android.util.Log
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -9,11 +8,13 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.githubsearchrepo.R
 import com.example.githubsearchrepo.databinding.FragmentHomeBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -53,19 +54,18 @@ class HomeFragment @Inject constructor() :
                 keyEvent.keyCode == KeyEvent.KEYCODE_ENTER
             ) {
                 if (keyEvent == null || !keyEvent.isShiftPressed) {
-
-                    homeViewModel.getRepositories(binding.edSearch.text.toString())
+                    lifecycleScope.launch {
+                        homeViewModel.getRepositories(binding.edSearch.text.toString()).collect {
+                            if (it.items.isNotEmpty()) {
+                                adapter.settingItemsList = it.items
+                            }
+                        }
+                    }
                     return@setOnEditorActionListener true
                 }
             }
             return@setOnEditorActionListener false
         }
-
-        homeViewModel.apiResult.observe(viewLifecycleOwner, Observer {
-            if (it.items.isNotEmpty()) {
-                adapter.settingItemsList = it.items
-            }
-        })
 
     }
 
